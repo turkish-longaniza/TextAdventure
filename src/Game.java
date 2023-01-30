@@ -152,6 +152,9 @@ public class Game {
         } else {
             currentRoom.setItem(itemName, dropItem);
         }
+        if (!player.getInventory().containsKey("tome")) {
+            circle.getExitMap().remove("South");
+        }
     }
 
     private void printHelp() {

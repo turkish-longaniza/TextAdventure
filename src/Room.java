@@ -54,6 +54,9 @@ public class Room{
         }
         return returnString;
     }
+    public HashMap getExitMap() {
+        return exits;
+    }
 
 
 
