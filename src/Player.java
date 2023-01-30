@@ -7,10 +7,10 @@ public class Player {
         inventory = new HashMap<>();
     }
     public String getItemString() {
-        String returnString = "Player Inventory";
+        String returnString = "Player Inventory:";
         Set<String> keys = inventory.keySet();
         for(String item: keys) {
-            returnString += "" + item;
+            returnString += " " + item;
         }
         return returnString;
     }
@@ -21,5 +21,9 @@ public class Player {
 
     public Item getItem(String name){
         return inventory.remove(name);
+    }
+
+    public HashMap getInventory(){
+        return inventory;
     }
 }

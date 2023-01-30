@@ -18,7 +18,7 @@ public class Room{
         String returnString = "Exits:";
         Set<String> keys = exits.keySet();
         for (String exit: keys) {
-            returnString += "" + exit;
+            returnString += " " + exit;
         }
         return returnString;
         }
@@ -27,7 +27,7 @@ public class Room{
         return description;
         }
         public String getLongDescription() {
-        return longDescription +"\n" + getExitString() + getItemString();
+        return longDescription +"\n" + getExitString() + "\n" + getItemString();
         }
 
 
@@ -47,13 +47,15 @@ public class Room{
         return inventory.remove(name);
     }
     public String getItemString() {
-        String returnString = "Room Inventory";
+        String returnString = "Room Inventory:";
         Set<String> keys = inventory.keySet();
         for(String item: keys) {
-            returnString += "" + item;
+            returnString += " " + item;
         }
         return returnString;
     }
+
+
 
 
 

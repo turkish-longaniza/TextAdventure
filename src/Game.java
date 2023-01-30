@@ -3,7 +3,13 @@ public class Game {
     private Parser parser;
 
     private Player player;
-    Item obj;
+    private Room circle;
+    private Room spring;
+    private Room summer;
+    private Room winter;
+    private Room fall;
+    private Room pond;
+    Item tome;
     Item obj2;
     public Game(){
         parser = new Parser();
@@ -16,15 +22,16 @@ public class Game {
         game.play();
     }
     private void createRooms(){
-        Room circle = new Room("You open your eyes standing in front of a low, dense hedge. You are surrounded by 4 large stones, one named after each season.",
-                "You wander to each stone and inspect them. They appear to be impenetrable stone walls with no apparent entry point. You come upon the stone labeled 'Winter'. " +
-                        "A cutting from a pine tree lays on the ground in front of the stone. You use it to brush away some dust on the stone. An outline of a door begins to appear." +
-                        " You lean against the door and it groans open, the sound of scraping stone fills the garden. You tumble into the darkness. The door clicks shut behind you.");
-        Room winter = new Room("Your breath is visible in front of you as you breathe the frosty air. You become acutely aware that you are only wearing a Hard Rock Cafe T-Shirt and cargo pants.","");
-        Room fall = new Room("", "");
-        Room spring = new Room("", "");
-        Room summer = new Room("", "");
-        Room pond = new Room("", "");
+         circle = new Room("You are standing in front of a low, dense hedge. You are surrounded by 4 large stones, one named after each season.",
+                "You turn around in a circle, observing each stone and trying to figure out how to get out. They appear to be impenetrable stone walls with no apparent entry point.");
+         winter = new Room(" You lean against the door and it groans open, the sound of scraping stone fills the garden. You tumble into the darkness. The door clicks shut behind you.",
+                "Your breath is visible in front of you as you breathe the frosty air. You become acutely aware that you are only wearing a Hard Rock Cafe T-Shirt and cargo pants two sizes too small. " +
+                "You wish you had invested in the Hard Rock sweatshirt and sweatpants. You wander about, rubbing your hands together and shivering. All you see is a pristine winter landscape, pine trees, snow " +
+                "covered hills. Then, your eye catches a glisten in the grey winter sunlight. A well worn leather bound tome is lying in the snow. It's gossamer pages glint brightly, inviting further investigation");
+         fall = new Room("", "");
+         spring = new Room("", "");
+         summer = new Room("test", "test2");
+         pond = new Room("", "");
 
 
         winter.setExit("South", circle);
@@ -32,15 +39,14 @@ public class Game {
         spring.setExit("West", circle);
         summer.setExit("North", circle);
         circle.setExit("North", winter);
-        circle.setExit("South", summer);
         circle.setExit("East", spring);
         circle.setExit("West", fall);
         circle.setExit("Down", pond);
 
-       obj = new Item();
+       tome = new Item();
        obj2 = new Item();
 
-        player.setItem("one", obj);
+        winter.setItem("tome", tome);
         currentRoom = circle;
 
     }
@@ -105,10 +111,11 @@ public class Game {
         Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null){
-            System.out.println("There is no door!");
+            System.out.println("You are not yet ready to travel in this direction. Reflect on what you can do now and return when you have gained new knowledge");
         }
         else{
             currentRoom = nextRoom;
+            System.out.println(currentRoom.getShortDescription());
         }
     }
 
@@ -125,6 +132,10 @@ public class Game {
         }
         else {
             player.setItem(itemName, grabItem);
+            System.out.println("You pick up the " + itemName + " and add it to your knapsack.");
+        }
+        if(player.getInventory().containsKey("tome")) {
+            circle.setExit("South", summer);
         }
     }
 
@@ -164,6 +175,10 @@ public class Game {
     private void printWelcome(){
         System.out.println();
         System.out.println("Welcome to my text adventure");
-        System.out.println("If you ever need help just ask. Type 'help' and help you shall receive.");
+        System.out.println("Your command words are:");
+        parser.showCommands();
+        System.out.println("If you ever forget them, just type help and you can see them all again.");
+        System.out.println("");
+        System.out.println(currentRoom.getShortDescription());
     }
 }
