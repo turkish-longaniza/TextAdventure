@@ -10,7 +10,8 @@ public class Game {
     private Room fall;
     private Room pond;
     Item tome;
-    Item obj2;
+    Item hat;
+
     public Game(){
         parser = new Parser();
         player = new Player();
@@ -24,13 +25,15 @@ public class Game {
     private void createRooms(){
          circle = new Room("You are standing in front of a low, dense hedge. You are surrounded by 4 large stones, one named after each season.",
                 "You turn around in a circle, observing each stone and trying to figure out how to get out. They appear to be impenetrable stone walls with no apparent entry point.");
-         winter = new Room(" You lean against the door and it groans open, the sound of scraping stone fills the garden. You tumble into the darkness. The door clicks shut behind you.",
+         winter = new Room(" You lean against the door labeled 'Winter' and it groans open, the sound of scraping stone fills the garden. You tumble into the darkness. The door clicks shut behind you.",
                 "Your breath is visible in front of you as you breathe the frosty air. You become acutely aware that you are only wearing a Hard Rock Cafe T-Shirt and cargo pants two sizes too small. " +
                 "You wish you had invested in the Hard Rock sweatshirt and sweatpants. You wander about, rubbing your hands together and shivering. All you see is a pristine winter landscape, pine trees, snow " +
                 "covered hills. Then, your eye catches a glisten in the grey winter sunlight. A well worn leather bound tome is lying in the snow. It's gossamer pages glint brightly, inviting further investigation");
-         fall = new Room("", "");
-         spring = new Room("", "");
-         summer = new Room("test", "test2");
+         summer = new Room("You push against the Stone labeled 'Summer' and it swings open freely, welcoming you into its warmth and brightness.", "Any lingering chill from your time in the cold of winter " +
+                 "dissipates instantly. Warmth seems to surround and envelop you. You feel sand beneath your feet and hear the distant sounds of the ocean. Lying in the sand by your feet is a tattered baseball hat. ");
+         spring = new Room("You push gently on the door labeled 'Spring', but it doesn't budge. You push harder, still nothing. You try one last time and suddenly the door springs open. You are surprised by this sudden motion and fall headfirst into the room.",
+                 "You stand up and brush yourself off. You look up and take in your surroundings. You are greeted by the smell of a fresh rain and the grass beneath your feet is pleasantly damp. You wander for some time enjoying the pleasant weather. You come upon a picnic blanket");
+         fall = new Room("", "test2");
          pond = new Room("", "");
 
 
@@ -39,14 +42,13 @@ public class Game {
         spring.setExit("West", circle);
         summer.setExit("North", circle);
         circle.setExit("North", winter);
-        circle.setExit("East", spring);
-        circle.setExit("West", fall);
         circle.setExit("Down", pond);
 
        tome = new Item();
-       obj2 = new Item();
+       hat = new Item();
 
         winter.setItem("tome", tome);
+        summer.setItem("hat", hat);
         currentRoom = circle;
 
     }
@@ -135,8 +137,11 @@ public class Game {
             System.out.println("You pick up the " + itemName + " and add it to your knapsack.");
         }
         if(player.getInventory().containsKey("tome")) {
-            circle.setExit("South", summer);
-        }
+            circle.setExit("East", spring);
+
+            if(player.getInventory().containsKey("hat")) {
+                circle.setExit("West", fall);
+            }
     }
 
     private void drop(Command command) {
@@ -154,13 +159,13 @@ public class Game {
         }
         if (!player.getInventory().containsKey("tome")) {
             circle.getExitMap().remove("South");
+        if (!player.getInventory().containsKey("hat")) {
+            circle.getExitMap().remove("West");
+        }
         }
     }
 
     private void printHelp() {
-        System.out.println("You grow overwhelmed by the scent of hydrangeas, you grow faint from the overbearing stench.");
-        System.out.println("When you awake you see a slip of paper has been placed by your head...");
-        System.out.println("It reads...");
         System.out.println("Hello traveler! Your command words are:");
         parser.showCommands();
         System.out.println("signed, I.J.");
