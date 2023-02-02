@@ -32,6 +32,6 @@ public class Parser {
         System.out.println("help, quit, go, look, grab, drop");
     }
     public void showCommands() {
-        commands.showAll();
+        System.out.println("reflect, help, quit, go, look, grab, drop");
     }
 }

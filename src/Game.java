@@ -10,7 +10,7 @@ public class Game {
     private Room fall;
     private Room pond;
 
-    private boolean understanding = false;
+    private boolean understanding;
     Item tome;
     Item hat;
 
@@ -46,7 +46,7 @@ public class Game {
         fall = new Room("As you approach the stone labeled 'Fall' it swings outwards toward you and a cold breeze issues out of the room.",
                 "You step boldly into the room and are affronted by a cutting wind. Despite the abrasive weather the scenery is beautiful. Autumnal colors ranging from deep browns to young oranges meet your eye " +
                         "everywhere you turn. Abandoned amongst the fallen leaves you see a pair of elegant reading glasses. The lenses glisten in the cool autumn light.");
-        pond = new Room("", "");
+        pond = new Room("You go through. You are standing by a pond ", "");
 
 
         winter.setExit("South", circle);
@@ -54,7 +54,9 @@ public class Game {
         spring.setExit("West", circle);
         summer.setExit("North", circle);
         circle.setExit("North", winter);
-        circle.setExit("Down", pond);
+
+
+        understanding = false;
 
         tome = new Item();
         hat = new Item();
@@ -63,6 +65,8 @@ public class Game {
 
         winter.setItem("tome", tome);
         summer.setItem("hat", hat);
+        spring.setItem("blanket", blanket);
+        fall.setItem("glasses", glasses);
         currentRoom = circle;
 
     }
@@ -107,6 +111,7 @@ public class Game {
                 look(command);
                 break;
             case REFLECT:
+                reflect(command);
                 break;
 
         }
@@ -116,7 +121,8 @@ public class Game {
     private void look(Command command) {
         if (command.hasSecondWord()) {
             System.out.println("You are already looking at " + command.getSecondWord() + ". You can't look at it again. Sorry.");
-        } else {
+        }
+         else {
             System.out.println(currentRoom.getLongDescription());
             System.out.println(player.getItemString());
         }
@@ -162,6 +168,9 @@ public class Game {
                 if (player.getInventory().containsKey("blanket")) {
                     circle.setExit("South", summer);
                 }
+        if (player.getInventory().containsKey("glasses")) {
+            System.out.println("Sometimes to move forward, you must first seek help");
+        }
 
         }
 
@@ -198,13 +207,16 @@ public class Game {
                     return;
                 }
                 else {
-                    understanding = true;
+                    circle.setExit("Through", pond);
+                    System.out.println("Return to the center and take a closer look.");
                 }
             }
 
+
+
         private void printHelp () {
         System.out.println("Hello lost one! Your command words are:");
-        if(understanding = true){
+        if(player.getInventory().containsKey("glasses")){
             parser.showCommands();
         }
         else{
