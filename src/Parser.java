@@ -28,6 +28,9 @@ public class Parser {
         return new Command(commands.getCommandWord(word1), word2);
     }
 
+    public void showFakeCommands() {
+        System.out.println("help, quit, go, look, grab, drop");
+    }
     public void showCommands() {
         commands.showAll();
     }
