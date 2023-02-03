@@ -10,7 +10,7 @@ public class Game {
     private Room fall;
     private Room pond;
 
-    private boolean understanding;
+    private boolean wantToQuit;
     Item tome;
     Item hat;
 
@@ -46,7 +46,8 @@ public class Game {
         fall = new Room("As you approach the stone labeled 'Fall' it swings outwards toward you and a cold breeze issues out of the room.",
                 "You step boldly into the room and are affronted by a cutting wind. Despite the abrasive weather the scenery is beautiful. Autumnal colors ranging from deep browns to young oranges meet your eye " +
                         "everywhere you turn. Abandoned amongst the fallen leaves you see a pair of elegant reading glasses. The lenses glisten in the cool autumn light.");
-        pond = new Room("You go through. You are standing by a pond ", "");
+        pond = new Room("You go through. You are standing by a pond. A peaceful calm comes over you.", "You lay out your blanket as a resting place. You put your hat on and are pleasantly shaded" +
+                " from the sunbeams filtering through the trees. You put on your glasses and everything comes into focus. You sit down and take out your tome. This will be a very pleasant afternoon. You open the book and begin to read");
 
 
         winter.setExit("South", circle);
@@ -55,8 +56,6 @@ public class Game {
         summer.setExit("North", circle);
         circle.setExit("North", winter);
 
-
-        understanding = false;
 
         tome = new Item();
         hat = new Item();
@@ -84,7 +83,7 @@ public class Game {
     }
 
     private boolean processCommand(Command command) {
-        boolean wantToQuit = false;
+        wantToQuit = false;
 
         CommandWord commandWord = command.getCommandWord();
 
@@ -119,7 +118,7 @@ public class Game {
     }
 
     private void look(Command command) {
-        if (command.hasSecondWord()) {
+        if (command.hasSecondWord() && currentRoom != pond) {
             System.out.println("You are already looking at " + command.getSecondWord() + ". You can't look at it again. Sorry.");
         }
          else {
@@ -141,6 +140,11 @@ public class Game {
         } else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getShortDescription());
+        }
+        if (currentRoom == pond){
+            look(command);
+            System.out.println("You win!");
+            wantToQuit = true;
         }
     }
 
@@ -203,8 +207,8 @@ public class Game {
 
             private void reflect (Command command) {
                 if (command.hasSecondWord()) {
-                    System.out.println("Don't overcomplicate things. Just reflect.");
-                    return;
+                    System.out.println("Sorry, you are not ready yet. You lose. Don't overcomplicate things next time. Just reflect.");
+                    wantToQuit = true;
                 }
                 else {
                     circle.setExit("Through", pond);
